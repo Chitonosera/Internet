@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lab2</title>
+    <style>
+        .calculator {
+            width: 200px;
+            margin: 20px auto;
+        }
+        input[type="button"], input[type="text"] {
+            width: 45px;
+            height: 45px;
+            margin: 5px;
+            font-size: 20px;
+        }
+        #output {
+            width: 190px;
+            height: 50px;
+            font-size: 22px;
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        #clock {
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .row {
+            display: flex;
+        }
+        .col {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+    <script>
+      
+        function updateClock() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0'); 
+            const day = String(now.getDate()).padStart(2, '0');
+            const hour = String(now.getHours()).padStart(2, '0');
+            const minute = String(now.getMinutes()).padStart(2, '0');
+            const second = String(now.getSeconds()).padStart(2, '0');
+
+            const formattedTime = `${year}:${month}:${day}:${hour}:${minute}:${second}`;
+            document.getElementById("clock").innerHTML = formattedTime;
+        }
+
+        setInterval(updateClock, 1000);
+
+ 
+        function insertValue(value) {
+            document.getElementById('output').value += value;
+        }
+
+        function calculate() {
+            try {
+                let result = eval(document.getElementById('output').value);
+                document.getElementById('output').value = result;
+            } catch (e) {
+                alert("Помилка в обчисленнях!");
+                clearOutput();
+            }
+        }
+
+        function clearOutput() {
+            document.getElementById('output').value = '';
+        }
+    </script>
+</head>
+<body onload="updateClock()">
+    <h1>Годинник</h1>
+
+    
+    <p id="clock"></p>
+
+    <h1>Калькулятор</h1>
+    <div class="calculator">
+        <input type="text" id="output" readonly>
+        <br>
+
+        <div class="row">
+          
+            <div class="col">
+                <input type="button" value="7" onclick="insertValue('7')">
+                <input type="button" value="4" onclick="insertValue('4')">
+                <input type="button" value="1" onclick="insertValue('1')">
+                <input type="button" value="0" onclick="insertValue('0')">
+            </div>
+
+            <div class="col">
+                <input type="button" value="8" onclick="insertValue('8')">
+                <input type="button" value="5" onclick="insertValue('5')">
+                <input type="button" value="2" onclick="insertValue('2')">
+                <input type="button" value="C" onclick="clearOutput()">
+            </div>
+
+            <div class="col">
+                <input type="button" value="9" onclick="insertValue('9')">
+                <input type="button" value="6" onclick="insertValue('6')">
+                <input type="button" value="3" onclick="insertValue('3')">
+                <input type="button" value="=" onclick="calculate()">
+            </div>
+
+            <div class="col">
+                <input type="button" value="+" onclick="insertValue('+')">
+                <input type="button" value="-" onclick="insertValue('-')">
+                <input type="button" value="*" onclick="insertValue('*')">
+                <input type="button" value="/" onclick="insertValue('/')">
+            </div>
+        </div>
+    </div>
+    <a href="./page1.html">ТИЦЬ</a>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Розрахунок площ геометричних фігур, Екранна клавіатура та Перегляд зображень</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input {
+            margin: 10px 0;
+        }
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(10, 50px);
+            gap: 5px;
+            margin-top: 20px;
+        }
+        .key {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .key:hover {
+            background-color: #e0e0e0;
+        }
+        #output {
+            width: 100%;
+            height: 40px;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #image-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #image-display {
+            max-width: 100%;
+            max-height: 400px;
+        }
+        #math-container {
+            margin-top: 30px;
+        }
+        .tree {
+            margin-top: 20px;
+            padding-left: 20px;
+            cursor: pointer;
+        }
+        .tree ul {
+            display: none; 
+            padding-left: 20px;
+        }
+        .tree.open ul {
+            display: block; 
+        }
+    </style>
+    <script>
+        
+        const lettersUk = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                        'а', 'б', 'в', 'г', 'д', 'е', 'є', 'и', 'і', 'ї', 
+                        'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 
+                        'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ь', 'ю', 'я'];
+
+        
+        const lettersEn = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                            'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+                            'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+                            'z', 'x', 'c', 'v', 'b', 'n', 'm'];
+
+        let currentLayout = 'uk'; 
+
+        function appendToOutput(value) {
+            document.getElementById("output").value += value;
+        }
+
+        function clearOutput() {
+            document.getElementById("output").value = "";
+        }
+
+        function createKeyboard() {
+            const keyboard = document.getElementById("keyboard");
+            const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+           
+            numbers.forEach(num => {
+                const key = document.createElement("div");
+                key.className = "key";
+                key.textContent = num;
+                key.onclick = () => appendToOutput(num);
+                keyboard.appendChild(key);
+            });
+
+           
+            addLettersToKeyboard();
+        }
+
+        function addLettersToKeyboard() {
+            const keyboard = document.getElementById("keyboard");
+            keyboard.innerHTML = ''; 
+            const letters = currentLayout === 'uk' ? lettersUk : lettersEn;
+
+            for (let i = 0; i < letters.length; i++) {
+                const key = document.createElement("div");
+                key.className = "key";
+                key.textContent = letters[i];
+                key.onclick = () => appendToOutput(letters[i]);
+                keyboard.appendChild(key);
+            }
+        }
+
+        function toggleLayout() {
+            currentLayout = currentLayout === 'uk' ? 'en' : 'uk';
+            addLettersToKeyboard();
+        }
+
+        function calculateArea() {
+            const base = parseFloat(document.getElementById("base").value);
+            const height = parseFloat(document.getElementById("height").value);
+            const result = document.getElementById("result");
+
+           
+            if (isNaN(base) || isNaN(height) || base <= 0 || height <= 0) {
+                result.textContent = "Будь ласка, введіть позитивні числа для основи та висоти.";
+                return;
+            }
+
+           
+            const area = 0.5 * base * height;
+            result.textContent = `Площа трикутника: ${area.toFixed(2)} квадратних одиниць.`;
+        }
+
+        
+        let imageArray = ['./images/image1.png', './images/image2.jpg', './images/image3.jpg', './images/image4.webp'];
+        let currentImageIndex = 0; 
+
+        function showImage(index) {
+            const imageDisplay = document.getElementById("image-display");
+            imageDisplay.src = imageArray[index];
+            imageDisplay.style.display = "block"; 
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % imageArray.length; 
+            showImage(currentImageIndex);
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + imageArray.length) % imageArray.length; 
+            showImage(currentImageIndex);
+        }
+
+        window.onload = function() {
+            createKeyboard();
+            showImage(currentImageIndex); 
+
+            
+            startMathQuiz();
+
+            createTree();
+        }
+
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        const totalQuestions = 5; 
+        let currentAnswer;
+
+        function startMathQuiz() {
+            if (currentQuestionIndex < totalQuestions) {
+                generateMathQuestion();
+            } else {
+                document.getElementById("math-question").textContent = `Тест завершено! Правильних відповідей: ${correctAnswers} з ${totalQuestions}.`;
+                document.getElementById("math-input").style.display = "none"; 
+                document.getElementById("check-button").style.display = "none"; 
+                document.getElementById("next-button").style.display = "none"; 
+            }
+        }
+
+        function generateMathQuestion() {
+            const num1 = Math.floor(Math.random() * 10); 
+            const num2 = Math.floor(Math.random() * 10); 
+            const operators = ['+', '-', '*', '/'];
+            const operator = operators[Math.floor(Math.random() * operators.length)];
+
+            
+            currentAnswer = calculateMathAnswer(num1, num2, operator);
+            document.getElementById("math-question").textContent = `${num1} ${operator} ${num2} = ?`;
+            document.getElementById("math-input").value = ""; 
+        }
+
+        function calculateMathAnswer(num1, num2, operator) {
+            switch (operator) {
+                case '+':
+                    return num1 + num2;
+                case '-':
+                    return num1 - num2;
+                case '*':
+                    return num1 * num2;
+                case '/':
+                    return num2 !== 0 ? (num1 / num2).toFixed(2) : 'undefined';
+                default:
+                    return null;
+            }
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseFloat(document.getElementById("math-input").value);
+            const mathResult = document.getElementById("math-result");
+            if (userAnswer === currentAnswer) {
+                correctAnswers++;
+                mathResult.textContent = "Правильно!";
+            } else {
+                mathResult.textContent = `Неправильно. Правильна відповідь: ${currentAnswer}`;
+            }
+            currentQuestionIndex++;
+            document.getElementById("next-button").style.display = "block"; 
+        }
+
+        function createTree() {
+            const treeContainer = document.getElementById("tree");
+            const treeData = {
+                "Фрукти": ["Яблуко", "Ананас", "Абрикос", "Груша", "Лимон"],
+                "Овочі": ["Картопля", "Буряк", "Морква", "Груша"]
+            };
+
+            for (const [category, items] of Object.entries(treeData)) {
+                const categoryDiv = document.createElement("div");
+                categoryDiv.className = "tree";
+                categoryDiv.textContent = category;
+                categoryDiv.onclick = function () {
+                    this.classList.toggle("open");
+                };
+
+                const itemList = document.createElement("ul");
+                items.forEach(item => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = item;
+                    itemList.appendChild(listItem);
+                });
+
+                categoryDiv.appendChild(itemList);
+                treeContainer.appendChild(categoryDiv);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Розрахунок площі трикутника, Екранна клавіатура та Перегляд зображень</h1>
+
+    <label for="base">Основa:</label>
+    <input type="number" id="base" required>
+    <br>
+    <label for="height">Висота:</label>
+    <input type="number" id="height" required>
+    <button onclick="calculateArea()">Обчислити площу</button>
+    <p id="result"></p>
+
+    <h2>Екранна клавіатура</h2>
+    <input type="text" id="output" readonly>
+    <div id="keyboard" class="keyboard"></div>
+    <button onclick="clearOutput()">Очистити</button>
+    <button onclick="toggleLayout()">Змінити розкладку</button>
+
+    <h2>Перегляд зображень</h2>
+    <button onclick="prevImage()">Попереднє</button>
+    <button onclick="nextImage()">Наступне</button>
+    <div id="image-container">
+        <img id="image-display" src="" alt="Image" style="display:none;">
+    </div>
+
+    <h2 id="math-container">Перевірка знань з математики</h2>
+    <p id="math-question"></p>
+    <input type="number" id="math-input" placeholder="Ваша відповідь">
+    <button id="check-button" onclick="checkAnswer()">Перевірити</button>
+    <button id="next-button" onclick="startMathQuiz()" style="display: none;">Наступне запитання</button>
+    <p id="math-result"></p>
+
+    <h2>Ієрархія</h2>
+    <div id="tree"></div>
+</body>
+</html>

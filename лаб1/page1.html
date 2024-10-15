@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управління інвентарем</title>
+    <script>
+        const products = ["Лампа", "Лінійка", "Люстра", "Лазер", "Ланцюг"];
+        const quantities = [50, 100, 20, 10, 30];
+        const prices = [200, 15, 1500, 5000, 300];
+        let currentIndex = -1;
+
+        function fun1() {
+            const productSelect = document.getElementById("productSelect");
+            currentIndex = productSelect.selectedIndex - 1; // -1 щоб врахувати перший елемент "Виберіть товар"
+            
+            if (currentIndex >= 0) {
+                document.getElementById("quantity").value = quantities[currentIndex];
+                document.getElementById("price").value = prices[currentIndex];
+            } else {
+                document.getElementById("quantity").value = "";
+                document.getElementById("price").value = "";
+                document.getElementById("totalSum").innerHTML = "";
+            }
+        }
+
+        function fun2() {
+            if (currentIndex >= 0) {
+                const totalSum = quantities[currentIndex] * prices[currentIndex];
+                document.getElementById("totalSum").innerHTML = 
+                    `Загальна вартість товару "${products[currentIndex]}": ${totalSum} грн`;
+            } else {
+                alert("Спочатку виберіть товар!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Управління інвентарем</h1>
+
+    <label for="productSelect">Оберіть товар:</label>
+    <select id="productSelect" onchange="fun1()">
+        <option value="">Виберіть товар</option>
+        <option value="Лампа">Лампа</option>
+        <option value="Лінійка">Лінійка</option>
+        <option value="Люстра">Люстра</option>
+        <option value="Лазер">Лазер</option>
+        <option value="Ланцюг">Ланцюг</option>
+    </select>
+    <br><br>
+
+    <label for="quantity">Кількість на складі:</label>
+    <input type="text" id="quantity" readonly>
+    <br>
+
+    <label for="price">Вартість за одиницю:</label>
+    <input type="text" id="price" readonly>
+    <br><br>
+
+    <button onclick="fun2()">Загальна сума</button>
+    <p id="totalSum"></p>
+    <a href="./lab1.html">main</a>
+</body>
+</html>

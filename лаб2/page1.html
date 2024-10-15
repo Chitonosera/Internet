@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генерація таблиці та робота з console</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        input {
+            margin: 5px;
+        }
+    </style>
+    <script>
+        function generateTable() {
+            const tableContainer = document.getElementById("tableContainer");
+            tableContainer.innerHTML = "";
+            document.getElementById("result").innerHTML = "";
+
+            const rows = parseInt(document.getElementById("rows").value);
+            const cols = parseInt(document.getElementById("cols").value);
+
+            const table = document.createElement("table");
+            const tbody = document.createElement("tbody");
+
+            let productLastColumn = 1;
+
+            for (let i = 1; i <= rows; i++) {
+                const tr = document.createElement("tr");
+                for (let j = 1; j <= cols; j++) {
+                    const td = document.createElement("td");
+
+                    const value = (-7 * j) / (3 * i);
+                    td.textContent = value.toFixed(2);
+                    tr.appendChild(td);
+
+                    if (j === cols) {
+                        productLastColumn *= value;
+                    }
+                }
+                tbody.appendChild(tr);
+            }
+
+            table.appendChild(tbody);
+            tableContainer.appendChild(table);
+
+            document.getElementById("result").textContent = `Добуток елементів останнього стовпця: ${productLastColumn.toFixed(2)}`;
+
+           
+            let a = 15;
+            let b = 4;
+            console.log("Остача від ділення", a, "на", b, ":", a % b);
+            console.log("Чи остача від ділення", a, "на", b, "дорівнює 0?", a % b === 0);
+
+            let arr = [10, 20, 30, 40, 50];
+            console.log("Масив: %o", arr);
+            console.log("Другий елемент масиву: %d", arr[1]);
+            console.log("Перший елемент масиву: %d, Останній елемент масиву: %d", arr[0], arr[arr.length - 1]);
+
+            console.info("Це інформаційне повідомлення");
+            console.warn("Це попереджувальне повідомлення!");
+            console.error("Це повідомлення про помилку!");
+
+            const obj = { name: "John", age: 30, city: "Kyiv" };
+            console.dir(obj); 
+            console.dirxml(obj); 
+
+            console.time("Тривалість"); 
+            for (let i = 0; i < 1000000; i++) {} 
+            console.timeEnd("Тривалість"); 
+
+            console.profile("Мій профіль"); 
+            for (let i = 0; i < 1000000; i++) {} 
+            console.profileEnd(); 
+
+            const condition = false; 
+            console.assert(condition, "Ця умова не виконується!"); 
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Генерація таблиці</h1>
+
+    <label for="rows">Кількість рядків:</label>
+    <input type="number" id="rows" min="1" value="3">
+
+    <label for="cols">Кількість стовпців:</label>
+    <input type="number" id="cols" min="1" value="3">
+
+    <button onclick="generateTable()">Створити таблицю</button>
+
+    <div id="tableContainer"></div>
+
+    <p id="result"></p>
+    <a href="./lab2.html">ТИЦЬ</a>
+
+    <h2>Приклади використання console.log()</h2>
+    <p>Перевірте консоль браузера для результатів (натисніть F12 або правою кнопкою миші та виберіть "Перевірити").</p>
+
+</body>
+</html>
