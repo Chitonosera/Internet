@@ -32,7 +32,7 @@
     <h1>Тестування</h1>
 
     <form id="testForm">
-        <!-- 1. Радіокнопки -->
+        
         <div class="question">
             <p>1. Оберіть столицю України:</p>
             <label><input type="radio" name="question1" value="Київ"> Київ</label><br>
@@ -41,7 +41,6 @@
             <label><input type="radio" name="question1" value="Одеса"> Одеса</label><br>
         </div>
 
-        <!-- 2. Радіокнопки -->
         <div class="question">
             <p>2. Оберіть планету Сонячної системи:</p>
             <label><input type="radio" name="question2" value="Земля"> Земля</label><br>
@@ -50,7 +49,7 @@
             <label><input type="radio" name="question2" value="Венера"> Венера</label><br>
         </div>
 
-        <!-- 3. Прапорці -->
+
         <div class="question">
             <p>3. Оберіть кольори прапора України:</p>
             <label><input type="checkbox" name="question3" value="Синій"> Синій</label><br>
@@ -59,7 +58,7 @@
             <label><input type="checkbox" name="question3" value="Зелений"> Зелений</label><br>
         </div>
 
-        <!-- 4. Прапорці -->
+
         <div class="question">
             <p>4. Оберіть фрукти:</p>
             <label><input type="checkbox" name="question4" value="Яблуко"> Яблуко</label><br>
@@ -68,7 +67,7 @@
             <label><input type="checkbox" name="question4" value="Ананас"> Ананас</label><br>
         </div>
 
-        <!-- 5. Одинарний вибір -->
+ 
         <div class="question">
             <p>5. Оберіть улюблений вид спорту:</p>
             <select name="question5">
@@ -79,7 +78,7 @@
             </select>
         </div>
 
-        <!-- 6. Множинний вибір -->
+        
         <div class="question">
             <p>6. Оберіть країни Європи:</p>
             <select name="question6" multiple>
@@ -90,7 +89,7 @@
             </select>
         </div>
 
-        <!-- 7. Текстове поле -->
+      
         <div class="question">
             <p>7. Введіть назву океану, що омиває береги України:</p>
             <input type="text" name="question7">
@@ -99,7 +98,7 @@
         <button type="button" onclick="calculateResults()">Завершити тестування</button>
     </form>
 
-    <!-- Таблиця результатів -->
+    
     <div id="resultContainer"></div>
 
     <script>
@@ -118,19 +117,19 @@
             let totalScore = 0;
             let resultHTML = "<table class='result-table'><tr><th>Запитання</th><th>Ваша відповідь</th><th>Отриманий бал</th></tr>";
 
-            // 1. Радіокнопки
+           
             let question1 = form["question1"].value;
             let score1 = question1 === correctAnswers.question1 ? 1 : 0;
             resultHTML += `<tr><td>1. Оберіть столицю України</td><td>${question1}</td><td>${score1}</td></tr>`;
             totalScore += score1;
 
-            // 2. Радіокнопки
+           
             let question2 = form["question2"].value;
             let score2 = question2 === correctAnswers.question2 ? 1 : 0;
             resultHTML += `<tr><td>2. Оберіть планету Сонячної системи</td><td>${question2}</td><td>${score2}</td></tr>`;
             totalScore += score2;
 
-            // 3. Прапорці
+            
             let question3 = [];
             form["question3"].forEach(checkbox => {
                 if (checkbox.checked) {
@@ -141,7 +140,7 @@
             resultHTML += `<tr><td>3. Оберіть кольори прапора України</td><td>${question3.join(', ')}</td><td>${score3}</td></tr>`;
             totalScore += score3;
 
-            // 4. Прапорці
+          
             let question4 = [];
             form["question4"].forEach(checkbox => {
                 if (checkbox.checked) {
@@ -152,13 +151,13 @@
             resultHTML += `<tr><td>4. Оберіть фрукти</td><td>${question4.join(', ')}</td><td>${score4}</td></tr>`;
             totalScore += score4;
 
-            // 5. Одинарний вибір
+          
             let question5 = form["question5"].value;
             let score5 = question5 === correctAnswers.question5 ? 1 : 0;
             resultHTML += `<tr><td>5. Оберіть улюблений вид спорту</td><td>${question5}</td><td>${score5}</td></tr>`;
             totalScore += score5;
 
-            // 6. Множинний вибір
+            
             let question6 = Array.from(form["question6"].options)
                                 .filter(option => option.selected)
                                 .map(option => option.value);
@@ -166,7 +165,6 @@
             resultHTML += `<tr><td>6. Оберіть країни Європи</td><td>${question6.join(', ')}</td><td>${score6}</td></tr>`;
             totalScore += score6;
 
-            // 7. Текстове поле
             let question7 = form["question7"].value.trim();
             let score7 = question7.toLowerCase() === correctAnswers.question7.toLowerCase() ? 1 : 0;
             resultHTML += `<tr><td>7. Введіть назву океану, що омиває береги України</td><td>${question7}</td><td>${score7}</td></tr>`;
