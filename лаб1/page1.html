@@ -9,7 +9,7 @@
         const quantities = [50, 100, 20, 10, 30];
         const prices = [200, 15, 1500, 5000, 300];
 
-        function updateDetails() {
+        function fin1() {
             const productSelect = document.getElementById("productSelect");
             const selectedOptions = Array.from(productSelect.selectedOptions);
             const detailsList = document.getElementById("detailsList");
@@ -30,7 +30,7 @@
             });
         }
 
-        function calculateTotalSum() {
+        function fun2() {
             const productSelect = document.getElementById("productSelect");
             const selectedOptions = Array.from(productSelect.selectedOptions);
             let totalSum = 0;
@@ -50,7 +50,7 @@
     <h1>Управління інвентарем</h1>
 
     <label for="productSelect">Оберіть товари:</label>
-    <select id="productSelect" multiple onchange="updateDetails()">
+    <select id="productSelect" multiple onchange="fin1()">
         <option value="-1">Виберіть товари</option>
         <option value="0">Лампа</option>
         <option value="1">Лінійка</option>
@@ -60,7 +60,7 @@
     </select>
     <br><br>
 
-    <button onclick="calculateTotalSum()">Загальна сума</button>
+    <button onclick="fun2()">Загальна сума</button>
     <p id="totalSum"></p>
 
     <h2>Деталі обраних товарів:</h2>
