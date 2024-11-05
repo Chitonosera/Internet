@@ -8,57 +8,64 @@
         const products = ["Лампа", "Лінійка", "Люстра", "Лазер", "Ланцюг"];
         const quantities = [50, 100, 20, 10, 30];
         const prices = [200, 15, 1500, 5000, 300];
-        let currentIndex = -1;
 
-        function fun1() {
+        function updateDetails() {
             const productSelect = document.getElementById("productSelect");
-            currentIndex = productSelect.selectedIndex - 1; // -1 щоб врахувати перший елемент "Виберіть товар"
-            
-            if (currentIndex >= 0) {
-                document.getElementById("quantity").value = quantities[currentIndex];
-                document.getElementById("price").value = prices[currentIndex];
-            } else {
-                document.getElementById("quantity").value = "";
-                document.getElementById("price").value = "";
-                document.getElementById("totalSum").innerHTML = "";
-            }
+            const selectedOptions = Array.from(productSelect.selectedOptions);
+            const detailsList = document.getElementById("detailsList");
+            detailsList.innerHTML = ""; 
+
+            selectedOptions.forEach(option => {
+                const index = option.value;
+                if (index >= 0) {
+                    const product = products[index];
+                    const quantity = quantities[index];
+                    const price = prices[index];
+                    const itemTotal = quantity * price;
+
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `Товар: ${product}, Кількість: ${quantity}, Вартість за одиницю: ${price} грн, Загальна вартість: ${itemTotal} грн`;
+                    detailsList.appendChild(listItem);
+                }
+            });
         }
 
-        function fun2() {
-            if (currentIndex >= 0) {
-                const totalSum = quantities[currentIndex] * prices[currentIndex];
-                document.getElementById("totalSum").innerHTML = 
-                    `Загальна вартість товару "${products[currentIndex]}": ${totalSum} грн`;
-            } else {
-                alert("Спочатку виберіть товар!");
-            }
+        function calculateTotalSum() {
+            const productSelect = document.getElementById("productSelect");
+            const selectedOptions = Array.from(productSelect.selectedOptions);
+            let totalSum = 0;
+
+            selectedOptions.forEach(option => {
+                const index = option.value;
+                if (index >= 0) {
+                    totalSum += quantities[index] * prices[index];
+                }
+            });
+
+            document.getElementById("totalSum").innerHTML = `Загальна вартість обраних товарів: ${totalSum} грн`;
         }
     </script>
 </head>
 <body>
     <h1>Управління інвентарем</h1>
 
-    <label for="productSelect">Оберіть товар:</label>
-    <select id="productSelect" onchange="fun1()">
-        <option value="">Виберіть товар</option>
-        <option value="Лампа">Лампа</option>
-        <option value="Лінійка">Лінійка</option>
-        <option value="Люстра">Люстра</option>
-        <option value="Лазер">Лазер</option>
-        <option value="Ланцюг">Ланцюг</option>
+    <label for="productSelect">Оберіть товари:</label>
+    <select id="productSelect" multiple onchange="updateDetails()">
+        <option value="-1">Виберіть товари</option>
+        <option value="0">Лампа</option>
+        <option value="1">Лінійка</option>
+        <option value="2">Люстра</option>
+        <option value="3">Лазер</option>
+        <option value="4">Ланцюг</option>
     </select>
     <br><br>
 
-    <label for="quantity">Кількість на складі:</label>
-    <input type="text" id="quantity" readonly>
-    <br>
-
-    <label for="price">Вартість за одиницю:</label>
-    <input type="text" id="price" readonly>
-    <br><br>
-
-    <button onclick="fun2()">Загальна сума</button>
+    <button onclick="calculateTotalSum()">Загальна сума</button>
     <p id="totalSum"></p>
+
+    <h2>Деталі обраних товарів:</h2>
+    <ul id="detailsList"></ul>
+
     <a href="./lab1.html">main</a>
 </body>
 </html>
